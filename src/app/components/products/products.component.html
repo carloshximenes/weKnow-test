@@ -1,0 +1,13 @@
+<section>
+  <div *ngIf="products.length > 0; else EmptyList">
+    <div *ngFor="let product of products">
+      <span>{{ product._id }}</span>
+      <span>{{ product.descricao }}</span>
+      <button (click)="deleteProduct(product._id!)">Deletar</button>
+    </div>
+  </div>
+</section>
+
+<ng-template #EmptyList>
+  <div>Nenhum produto existente...</div>
+</ng-template>
