@@ -8,7 +8,7 @@ import { ProductItemService } from './product-item.service';
 @Component({
   selector: 'app-product-item',
   templateUrl: './product-item.component.html',
-  styleUrls: ['./product-item.component.css'],
+  styleUrls: ['./product-item.component.scss'],
 })
 export class ProductItemComponent implements OnInit {
   public form: FormGroup = new FormGroup({});
@@ -66,8 +66,11 @@ export class ProductItemComponent implements OnInit {
     this._service
       .setProduct(product)
       .pipe(take(1))
-      .subscribe((p: IProduct) => {
-        this._router.navigate([`product/${p._id}`]);
+      .subscribe({
+        next: (p: IProduct) => {
+          this._router.navigate([`products`]);
+        },
+        error: (err) => console.log(err),
       });
   }
 }

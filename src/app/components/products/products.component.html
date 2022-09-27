@@ -1,9 +1,22 @@
 <section>
-  <div *ngIf="products.length > 0; else EmptyList">
-    <div *ngFor="let product of products">
-      <span>{{ product._id }}</span>
+  <button class="update" (click)="getProducts()">Atualizar Lista</button>
+  <div class="products" *ngIf="products.length > 0; else EmptyList">
+    <div class="product" *ngFor="let product of products">
       <span>{{ product.descricao }}</span>
-      <button (click)="deleteProduct(product._id!)">Deletar</button>
+      <div class="product__actions">
+        <button
+          class="product__actions__edit"
+          (click)="editProduct(product._id!)"
+        >
+          Editar
+        </button>
+        <button
+          class="product__actions__delete"
+          (click)="deleteProduct(product._id!)"
+        >
+          Deletar
+        </button>
+      </div>
     </div>
   </div>
 </section>

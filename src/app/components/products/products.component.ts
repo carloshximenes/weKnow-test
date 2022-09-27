@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import IProduct from 'src/app/interfaces/IProduct.interface';
 import { ProductsService } from './products.service';
@@ -6,12 +7,12 @@ import { ProductsService } from './products.service';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css'],
+  styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
   public products: IProduct[] = [];
 
-  constructor(private _service: ProductsService) {}
+  constructor(private _service: ProductsService, private _router: Router) {}
 
   ngOnInit(): void {
     this.getProducts();
@@ -21,8 +22,11 @@ export class ProductsComponent implements OnInit {
     this._service
       .getProducts()
       .pipe(take(1))
-      .subscribe((list: IProduct[]) => {
-        this.products = list;
+      .subscribe({
+        next: (list: IProduct[]) => {
+          this.products = list;
+        },
+        error: (err) => console.log(err),
       });
   }
 
@@ -30,10 +34,18 @@ export class ProductsComponent implements OnInit {
     this._service
       .deleteProduct(id)
       .pipe(take(1))
-      .subscribe((r) => {
-        if (!r) {
-          console.log(`DELETED`);
-        }
+      .subscribe({
+        next: (r) => {
+          if (!r) {
+            alert('Item removido com sucesso');
+            this.getProducts();
+          }
+        },
+        error: (err) => console.log(err),
       });
+  }
+
+  public editProduct(id: string): void {
+    this._router.navigate([`product/${id}`]);
   }
 }
